@@ -1,39 +1,24 @@
-def word_count(text):
-    return len(text.split())
-
-def char_count(text):
-    count = {}
-    text = text.lower()
-    for i in text:
-        if i in count:
-            count[i]+=1
-        else:
-            count[i] = 1
-    return count
+import sys
+from stats import word_count, char_count, sort_on
 
 
 def main():
-    with open("books/frankenstein.txt") as f:
-        file_contents = f.read()
-    wc = word_count(file_contents)
-    cc = char_count(file_contents)
-
-    print("--- Begin report of books/frankenstein.txt ---")
-    print(f"{wc} words found in the document")
-    print()
-    for item,count in cc.items():
-        print(f"The \'{item}\' character was found {count} times")
-    print("--- End report ---")
-
-
-
-
-
-
-
-
-
-
+    if len(sys.argv) < 2:
+        print("Usage: python3 main.py <path_to_book>")
+        sys.exit(1)
+    else:
+        with open(f"{sys.argv[1]}", encoding="utf-8", errors="ignore") as f:
+            file_contents = f.read()
+        wc = word_count(file_contents)
+        cc = char_count(file_contents)
+        print("--- Begin report of books/frankenstein.txt ---")
+        print(f"Found {wc} total words")
+        print()
+        new_cc = sort_on(list(cc.items()))
+        for item, count in new_cc:
+            if item.isalpha():
+                print(f"{item}: {count}")
+        print("--- End report ---")
 
 
 if __name__ == "__main__":
